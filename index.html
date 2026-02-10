@@ -39,25 +39,34 @@ body.zoom { animation: slowZoom 9s ease-in-out forwards; }
   to { background-size: 108%; }
 }
 
-/* LOCK SCREEN */
+/* ================= LOCK SCREEN ================= */
+
+/* 🔧 CHANGED: background image ONLY */
 #lockScreen {
   position: fixed;
   inset: 0;
-  background: linear-gradient(135deg, #ff69b4, #000);
+  background-image: url('lock-bg.jpg'); /* 👈 YOUR LOCK SCREEN IMAGE */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 999;
 }
+
+/* 🔧 CHANGED: no blur + light blue tint */
 .lockBox {
-  background: rgba(0,0,0,0.6);
+  background: rgba(0, 100, 255, 0.25); /* subtle blue */
   padding: 30px;
   border-radius: 20px;
   text-align: center;
   width: 85%;
   max-width: 350px;
   box-shadow: 0 0 30px pink;
+  backdrop-filter: none; /* IMPORTANT: no blur */
 }
+
 .lockBox h1 { font-size: 1.6em; margin-bottom: 10px; }
 .lockBox input {
   width: 100%;
@@ -145,13 +154,6 @@ button {
 #yesBtn { background: #32cd32; color: white; font-weight: bold; }
 #noBtn { background: #ff4500; color: white; }
 
-.signature {
-  font-size: 1.8em;
-  font-style: italic;
-  color: #ffb6c1;
-  margin-top: 25px;
-}
-
 /* STORY */
 .story { display: flex; justify-content: center; margin: 20px 0; }
 .story-slide {
@@ -198,7 +200,6 @@ button {
 <!-- BACKGROUND MUSIC -->
 <audio id="bgMusic" loop>
   <source src="lovestory.mp3" type="audio/mpeg">
-  Your browser does not support the audio element.
 </audio>
 
 <div id="hearts"></div>
@@ -246,7 +247,8 @@ button {
     I fall for you more every day, my girl.<br><br>
     Thank you for being my everything, my talks, my support,
     my favorite person.<br><br>
-    I'll choose you every single day. And yeah, that beauty of yours… I already dream of the little versions of you we'll get to love together one day 🥹♥️ (ik you rolled your eyes😂 but that's my wish to see em inherit your beauty🥺🫶)
+    I'll choose you every single day. And yeah, that beauty of yours… 
+    I already dream of the little versions of you we'll get to love together one day 🥹♥️
   </div>
   <div class="signature">
     Forever Together 🫂💍<br>Yours Kultee❤️
@@ -276,13 +278,9 @@ button {
   <h1>YAYYYYY SHE SAID YES, BABY!!! 🥹♥️🥳</h1>
   <div class="content">
     You just made my whole year 🫶<br><br>
-    I love you so much Mufaro and I'll love you forever and ever my cutie penguin🥹, my peace,
-    my forever Valentine 💍✨
+    I love you so much Mufaro and I'll love you forever and ever my cutie penguin🥹
   </div>
-
-  <!-- NEW BUTTON -->
   <button onclick="showPage('p7')">This could be us🥲 just PRESS♥️😊</button>
-
   <div id="screenshotReminder">💡 Don’t forget to screenshot this and send it to me!♥️</div>
 </div>
 
@@ -290,7 +288,7 @@ button {
 <div class="page" id="p7">
   <h1>Just imagine… 😍</h1>
   <div class="content">
-    <img src="togetherPhoto.png" alt="Us together" style="max-width:90%; border-radius:20px; box-shadow:0 0 20px pink;">
+    <img src="togetherPhoto.png" style="max-width:90%; border-radius:20px; box-shadow:0 0 20px pink;">
   </div>
   <button onclick="showPage(6)">Go Back 🫂</button>
 </div>
@@ -299,22 +297,17 @@ button {
 
 <script>
 /* ===== PHOTOS ARRAY ===== */
-const allPhotos = [
-  'mufaro1.jpg','mufaro2.jpg','mufaro3.jpg','mufaro4.jpg','mufaro5.jpg',
-  'mufaro6.jpg','mufaro7.jpg','mufaro8.jpg','mufaro9.jpg','mufaro10.jpg'
+const allPhotos=[
+'mufaro1.jpg','mufaro2.jpg','mufaro3.jpg','mufaro4.jpg','mufaro5.jpg',
+'mufaro6.jpg','mufaro7.jpg','mufaro8.jpg','mufaro9.jpg','mufaro10.jpg'
 ];
 
-/* BACKGROUNDS FULLSCREEN WITH 2s TRANSITION */
 let bg=0;
 function setBg(){
-  document.body.style.transition='background-image 2s ease-in-out';
   document.body.style.backgroundImage=`url('${allPhotos[bg]}')`;
 }
 setBg();
-setInterval(()=>{
-  bg=(bg+1)%allPhotos.length;
-  setBg();
-},2000);
+setInterval(()=>{ bg=(bg+1)%allPhotos.length; setBg(); },2000);
 
 /* HEARTS */
 setInterval(()=>{
@@ -375,11 +368,9 @@ function sayNo(){
 function sayYes(){
   if(navigator.vibrate) navigator.vibrate(200);
   startConfetti();
-
-  const yesAudio = new Audio('yesSound.mp3');
-  yesAudio.volume = 0.7;
-  yesAudio.play().catch(err => console.log("Yes audio blocked", err));
-
+  const yesAudio=new Audio('yesSound.mp3');
+  yesAudio.volume=0.7;
+  yesAudio.play().catch(()=>{});
   setTimeout(()=>showPage(6),1200);
 }
 
@@ -390,22 +381,20 @@ function startConfetti(){
   const p=[...Array(200)].map(()=>({x:Math.random()*c.width,y:Math.random()*-c.height,s:6,d:4}));
   (function a(){
     ctx.clearRect(0,0,c.width,c.height);
-    p.forEach(o=>{o.y+=o.d; ctx.fillStyle='pink'; ctx.fillRect(o.x,o.y,o.s,o.s); });
+    p.forEach(o=>{o.y+=o.d; ctx.fillStyle='pink'; ctx.fillRect(o.x,o.y,o.s,o.s);});
     requestAnimationFrame(a);
   })();
 }
 
 /* LOCK & MUSIC */
 function unlock(){
-  if(passwordInput.value === "MTWLB77"){
+  if(passwordInput.value==="MTWLB77"){
     lockScreen.style.display="none";
-
-    const music = new Audio('lovestory.mp3');
-    music.loop = true;
-    music.volume = 0.5;
-    music.play().catch(err => console.log("Music blocked, needs user gesture", err));
-
-  } else {
+    const music=new Audio('lovestory.mp3');
+    music.loop=true;
+    music.volume=0.5;
+    music.play().catch(()=>{});
+  }else{
     errorMsg.innerText="Uhm baby… that’s not our secret 🥺";
   }
 }
