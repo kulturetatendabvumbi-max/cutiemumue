@@ -12,6 +12,7 @@
 body {
   margin: 0;
   height: 100vh;
+  width: 100vw;
   color: white;
   font-family: Arial, Helvetica, sans-serif;
   text-align: center;
@@ -20,7 +21,7 @@ body {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  transition: background-image 1.2s ease, filter 0.6s ease;
+  transition: background-image 1.5s ease-in-out;
 }
 body.blur { filter: blur(6px); }
 body.zoom { animation: slowZoom 9s ease-in-out forwards; }
@@ -147,7 +148,7 @@ button {
 .story { display: flex; justify-content: center; margin: 20px 0; }
 .story-slide {
   max-width: 85%;
-  background: rgba(0,0,0,0); /* NO BLUR for story box */
+  background: rgba(0,0,0,0);
   border-radius: 20px;
   padding: 25px;
   font-size: 1.25em;
@@ -295,16 +296,17 @@ const allPhotos = [
   'mufaro6.jpg','mufaro7.jpg','mufaro8.jpg','mufaro9.jpg','mufaro10.jpg'
 ];
 
-/* BACKGROUNDS */
+/* BACKGROUNDS FULLSCREEN WITH 2s TRANSITION */
 let bg=0;
 function setBg(){
-  document.body.classList.remove('zoom');
-  void document.body.offsetHeight;
+  document.body.style.transition='background-image 2s ease-in-out';
   document.body.style.backgroundImage=`url('${allPhotos[bg]}')`;
-  document.body.classList.add('zoom');
 }
 setBg();
-setInterval(()=>{ bg=(bg+1)%allPhotos.length; setBg(); },9000);
+setInterval(()=>{
+  bg=(bg+1)%allPhotos.length;
+  setBg();
+},2000);
 
 /* HEARTS */
 setInterval(()=>{
@@ -366,7 +368,6 @@ function sayYes(){
   if(navigator.vibrate) navigator.vibrate(200);
   startConfetti();
 
-  // Play special Yes audio
   const yesAudio = new Audio('yesSound.mp3');
   yesAudio.volume = 0.7;
   yesAudio.play().catch(err => console.log("Yes audio blocked", err));
