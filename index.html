@@ -3,10 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<!-- FORCE DARK MODE -->
 <meta name="color-scheme" content="dark">
-
 <title>To My ❤️ Mufaro</title>
 
 <style>
@@ -26,6 +23,12 @@ body {
   transition: background-image 1.2s ease, filter 0.6s ease;
 }
 body.blur { filter: blur(6px); }
+body.zoom { animation: slowZoom 9s ease-in-out forwards; }
+
+@keyframes slowZoom {
+  from { background-size: 100%; }
+  to { background-size: 108%; }
+}
 
 /* LOCK SCREEN */
 #lockScreen {
@@ -144,8 +147,7 @@ button {
 .story { display: flex; justify-content: center; margin: 20px 0; }
 .story-slide {
   max-width: 85%;
-  background: rgba(0,0,50,0.25);
-  backdrop-filter: blur(6px);
+  background: rgba(0,0,0,0); /* NO BLUR for story box */
   border-radius: 20px;
   padding: 25px;
   font-size: 1.25em;
@@ -209,7 +211,7 @@ button {
 <div class="page" id="p2">
   <h2>That smile of yours...</h2>
   <div class="content">
-    ..reminds me about our calls, your blushing bla bla bla,
+    ..reminds me about our videochats, your blushing bla bla bla,
     how beautiful life is with you and wena laughing at my terrible jokes.😭
     Your laugh lit up everything cutie.
   </div>
@@ -231,7 +233,7 @@ button {
 <!-- PAGE 4 -->
 <div class="page" id="p4">
   <div class="content">
-    Our love, your cute focused face, endless calls🥹...
+    Our love, your cute focused face, your sexy body🥹...
     I fall for you more every day, my girl.<br><br>
     Thank you for being my everything, my talks, my support,
     my favorite person.<br><br>
@@ -260,7 +262,7 @@ button {
   <button id="noBtn" onclick="sayNo()">No 😏</button>
 </div>
 
-<!-- FINAL -->
+<!-- FINAL CELEBRATION -->
 <div class="page" id="p6">
   <h1>YAYYYYY SHE SAID YES, BABY!!! 🥹♥️🥳</h1>
   <div class="content">
@@ -268,22 +270,41 @@ button {
     I love you so much Mufaro and I'll love you forever and ever my cutie penguin🥹, my peace,
     my forever Valentine 💍✨
   </div>
+
+  <!-- NEW BUTTON -->
+  <button onclick="showPage('p7')">This could be us🥲 just PRESS♥️😊</button>
+
   <div id="screenshotReminder">💡 Don’t forget to screenshot this and send it to me!♥️</div>
+</div>
+
+<!-- EXTRA PHOTO PAGE -->
+<div class="page" id="p7">
+  <h1>Just imagine… 😍</h1>
+  <div class="content">
+    <img src="togetherPhoto.png" alt="Us together" style="max-width:90%; border-radius:20px; box-shadow:0 0 20px pink;">
+  </div>
+  <button onclick="showPage(6)">Go Back 🫂</button>
 </div>
 
 </div>
 
 <script>
 /* ===== PHOTOS ARRAY ===== */
-const allPhotos = ['mufaro1.jpg','mufaro2.jpg','mufaro3.jpg','mufaro4.jpg'];
+const allPhotos = [
+  'mufaro1.jpg','mufaro2.jpg','mufaro3.jpg','mufaro4.jpg','mufaro5.jpg',
+  'mufaro6.jpg','mufaro7.jpg','mufaro8.jpg','mufaro9.jpg','mufaro10.jpg'
+];
 
 /* BACKGROUNDS */
 let bg=0;
-document.body.style.backgroundImage=`url('${allPhotos[0]}')`;
-setInterval(()=>{
-  bg=(bg+1)%allPhotos.length;
+function setBg(){
+  document.body.classList.remove('zoom');
+  void document.body.offsetHeight;
   document.body.style.backgroundImage=`url('${allPhotos[bg]}')`;
-},9000);
+  document.body.classList.add('zoom');
+}
+setBg();
+setInterval(()=>{ bg=(bg+1)%allPhotos.length; setBg(); },9000);
 
 /* HEARTS */
 setInterval(()=>{
@@ -316,14 +337,13 @@ const storyQuotes=[
   'Looking back at how we started, I\'m so lucky you said yes 🥹',
   'Endless calls and long chats became our little world ♥️',
   'Y\'a truly amazing: kind, sweet, funny, thoughtful, caring… and I\'m lucky to call you mine 🫶',
-  'And we keep loving each other more every day ♥️'
+  'And despite being in a long distance relationship, we keep loving each other more every day ♥️'
 ];
 let si=0,st=null;
 function startStory(){
   storyBox.innerText=storyQuotes[0];
   storyContinue.style.display='none';
-  si=0;
-  clearInterval(st);
+  si=0; clearInterval(st);
   st=setInterval(()=>{
     si++;
     if(si<storyQuotes.length){
@@ -345,17 +365,23 @@ function sayNo(){
 function sayYes(){
   if(navigator.vibrate) navigator.vibrate(200);
   startConfetti();
+
+  // Play special Yes audio
+  const yesAudio = new Audio('yesSound.mp3');
+  yesAudio.volume = 0.7;
+  yesAudio.play().catch(err => console.log("Yes audio blocked", err));
+
   setTimeout(()=>showPage(6),1200);
 }
 
 /* CONFETTI */
 function startConfetti(){
   const c=document.getElementById('confetti-canvas'),ctx=c.getContext('2d');
-  c.width=innerWidth;c.height=innerHeight;
+  c.width=innerWidth; c.height=innerHeight;
   const p=[...Array(200)].map(()=>({x:Math.random()*c.width,y:Math.random()*-c.height,s:6,d:4}));
   (function a(){
     ctx.clearRect(0,0,c.width,c.height);
-    p.forEach(o=>{o.y+=o.d;ctx.fillStyle='pink';ctx.fillRect(o.x,o.y,o.s,o.s);});
+    p.forEach(o=>{o.y+=o.d; ctx.fillStyle='pink'; ctx.fillRect(o.x,o.y,o.s,o.s); });
     requestAnimationFrame(a);
   })();
 }
@@ -365,15 +391,10 @@ function unlock(){
   if(passwordInput.value === "MTWLB77"){
     lockScreen.style.display="none";
 
-    // Create audio dynamically
-    const music = new Audio('lovestory.mp3'); // make sure the file is in the same folder
+    const music = new Audio('lovestory.mp3');
     music.loop = true;
     music.volume = 0.5;
-
-    // Play immediately
-    music.play().catch(err => {
-      console.log("Music blocked, needs user gesture", err);
-    });
+    music.play().catch(err => console.log("Music blocked, needs user gesture", err));
 
   } else {
     errorMsg.innerText="Uhm baby… that’s not our secret 🥺";
