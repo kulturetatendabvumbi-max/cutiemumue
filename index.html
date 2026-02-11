@@ -6,6 +6,9 @@
 <meta name="color-scheme" content="dark">
 <title>To My ❤️ Mufaro</title>
 
+<!-- Google Fonts: Manrope -->
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
 <!-- Open Graph for link preview -->
 <meta property="og:title" content="To My ❤️ Mufaro">
 <meta property="og:description" content="A private love page just for you">
@@ -22,7 +25,7 @@ body {
   height: 100vh;
   width: 100vw;
   color: white;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Manrope', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   text-align: center;
   overflow: hidden;
   position: relative;
@@ -52,7 +55,6 @@ body.zoom { animation: none !important; }
   z-index: 999;
 }
 
-/* ✅ TRANSPARENT + MEDIUM + CENTER */
 .lockBox {
   background: rgba(255,255,255,0.08);
   padding: 28px;
@@ -64,7 +66,7 @@ body.zoom { animation: none !important; }
   backdrop-filter: none;
 }
 
-.lockBox h1 { font-size: 1.6em; margin-bottom: 10px; }
+.lockBox h1 { font-size: 1.6em; margin-bottom: 10px; font-weight: 600; }
 .lockBox input {
   width: 100%;
   padding: 14px;
@@ -73,6 +75,7 @@ body.zoom { animation: none !important; }
   font-size: 1.1em;
   text-align: center;
   margin: 15px 0;
+  font-weight: 400;
 }
 .lockBox button {
   background: #32cd32;
@@ -80,6 +83,7 @@ body.zoom { animation: none !important; }
   padding: 12px 35px;
   border-radius: 30px;
   font-size: 1.1em;
+  font-weight: 600;
 }
 #errorMsg { color: #ffb6c1; margin-top: 10px; }
 
@@ -107,7 +111,7 @@ body.zoom { animation: none !important; }
   padding: 20px;
 }
 
-/* PAGES — NO SCALE = NO SHAKE */
+/* PAGES */
 .page {
   display: none;
   max-width: 90%;
@@ -128,14 +132,26 @@ body.zoom { animation: none !important; }
 
 /* HEADERS */
 h1 {
-  font-size: 1.75em;
-  margin: 0.3em 0;
+  font-size: 1.9em;
+  margin: 0.4em 0;
   color: #ff69b4;
   text-shadow: 0 0 12px #ff1493;
+  font-weight: 700;
+  letter-spacing: -0.02em;
 }
-h2 { font-size: 1.5em; color: #ffb6c1; }
+h2 {
+  font-size: 1.6em;
+  color: #ffb6c1;
+  font-weight: 600;
+  margin: 0.5em 0;
+}
 
-.content { font-size: 1.25em; line-height: 1.5; margin: 20px 0; }
+.content {
+  font-size: 1.25em;
+  line-height: 1.6;
+  margin: 20px 0;
+  font-weight: 400;
+}
 
 /* BUTTONS */
 button {
@@ -145,8 +161,9 @@ button {
   border: none;
   border-radius: 50px;
   cursor: pointer;
+  font-weight: 600;
 }
-#yesBtn { background: #32cd32; color: white; font-weight: bold; }
+#yesBtn { background: #32cd32; color: white; }
 #noBtn { background: #ff4500; color: white; }
 
 /* STORY */
@@ -157,6 +174,7 @@ button {
   border-radius: 20px;
   padding: 25px;
   font-size: 1.25em;
+  font-weight: 400;
   box-shadow: 0 4px 15px rgba(0,150,255,0.3);
   transition: opacity 0.8s ease;
 }
@@ -172,9 +190,10 @@ button {
 
 /* SCREENSHOT REMINDER */
 #screenshotReminder {
-  font-size: 0.9em;
+  font-size: 0.95em;
   color: #ffb6c1;
   margin-top: 20px;
+  font-weight: 400;
 }
 </style>
 </head>
@@ -238,13 +257,13 @@ button {
 <!-- PAGE 4 -->
 <div class="page" id="p4">
   <div class="content">
-    Our love, your cute focused face, your sexy body🥹...
+    Our love, your cute focused face, your sexy body🥹...<br><br>
     I fall for you more every day, my girl.<br><br>
-    Y'a truly amazing, kind, sweet, funny, thoughtful, caring… and I'm lucky to call you my baby🫶  <br><br>
+    Y'a truly amazing, kind, sweet, funny, thoughtful, caring… and I'm lucky to call you my baby🫶<br><br>
     I'll choose you every single day. And yeah, that beauty of yours… 
     I already see three mini YOU, that we'll get to love together one day 🥹♥️ (ik you rolled your eyes😂)
   </div>
-  <div class="signature">
+  <div class="signature" style="margin-top:30px; font-size:1.1em; font-weight:500; color:#ff9ac7;">
     Forever Together🫂💍 <br>Yours Kultee❤️
   </div>
   <button onclick="showPage('pStory')">Ready for something special? 💌</button>
@@ -273,7 +292,7 @@ button {
   <div class="content">
     You just made my whole year 🫶<br><br>
     I love you so much Mufaro and I'll love you forever and ever my cutie penguin🥹
-    </div>
+  </div>
   <button onclick="showPage('p7')">This could be us🥲 just PRESS♥️😊</button>
   <div id="screenshotReminder">💡 Don’t forget to screenshot this and send it to me!♥️</div>
 </div>
@@ -290,7 +309,7 @@ button {
 </div>
 
 <script>
-/* ===== PHOTOS ARRAY ===== */
+// ===== PHOTOS ARRAY =====
 const allPhotos=[
 'mufaro1.jpg','mufaro2.jpg','mufaro3.jpg','mufaro4.jpg','mufaro5.jpg',
 'mufaro6.jpg','mufaro7.jpg','mufaro8.jpg','mufaro9.jpg','mufaro10.jpg'
@@ -303,7 +322,7 @@ function setBg(){
 setBg();
 setInterval(()=>{ bg=(bg+1)%allPhotos.length; setBg(); },2000);
 
-/* HEARTS */
+// HEARTS
 setInterval(()=>{
   const h=document.createElement('div');
   h.className='heart';
@@ -314,7 +333,7 @@ setInterval(()=>{
   setTimeout(()=>h.remove(),15000);
 },400);
 
-/* PAGE SWITCH */
+// PAGE SWITCH
 function showPage(n){
   document.body.classList.add('blur');
   setTimeout(()=>{
@@ -326,7 +345,7 @@ function showPage(n){
   },400);
 }
 
-/* STORY */
+// STORY
 const storyQuotes=[
   '"beautiful♥️" looks familiar? yeah that\'s how it all started🥹',
   'Started dating after 11 days, imagine🥺♥️',
@@ -352,7 +371,7 @@ function startStory(){
   },6000);
 }
 
-/* VALENTINE */
+// VALENTINE
 let noCount=0;
 function sayNo(){
   noCount++;
@@ -367,7 +386,7 @@ function sayYes(){
   setTimeout(()=>showPage(6),1200);
 }
 
-/* CONFETTI */
+// CONFETTI
 function startConfetti(){
   const c=document.getElementById('confetti-canvas'),ctx=c.getContext('2d');
   c.width=innerWidth; c.height=innerHeight;
@@ -379,19 +398,17 @@ function startConfetti(){
   })();
 }
 
-/* LOCK & MUSIC */
+// LOCK & MUSIC
 function unlock(){
   if(passwordInput.value==="MTWLB77"){
     lockScreen.style.display="none";
     
-    // Use the existing audio element instead of creating a new one
     const music = document.getElementById('bgMusic');
     music.volume = 0.5;
     music.play().catch(e => {
       console.log("Autoplay blocked - user interaction may be needed", e);
     });
     
-    // Optional: auto-show first page (already active, but just to be sure)
     document.getElementById('p1').classList.add('active');
   }else{
     errorMsg.innerText="Uhm baby… that’s not our secret 🥺";
