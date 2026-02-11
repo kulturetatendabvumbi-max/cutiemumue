@@ -330,7 +330,7 @@ function showPage(n){
 const storyQuotes=[
   '"beautiful♥️" looks familiar? yeah that\'s how it all started🥹',
   'Started dating after 11 days, imagine🥺♥️',
-  'I know you said I love you first but i can't prove it😭',
+  'I know you said I love you first but i can\'t prove it😭',
   'Looking back at how we started, I\'m so lucky ya mine🥹',
   'Endless calls and long chats became our little world ♥️',
   'And despite being in a long distance relationship, we keep loving each other more every day ♥️'
@@ -383,10 +383,16 @@ function startConfetti(){
 function unlock(){
   if(passwordInput.value==="MTWLB77"){
     lockScreen.style.display="none";
-    const music=new Audio('lovestory.mp3');
-    music.loop=true;
-    music.volume=0.5;
-    music.play().catch(()=>{});
+    
+    // Use the existing audio element instead of creating a new one
+    const music = document.getElementById('bgMusic');
+    music.volume = 0.5;
+    music.play().catch(e => {
+      console.log("Autoplay blocked - user interaction may be needed", e);
+    });
+    
+    // Optional: auto-show first page (already active, but just to be sure)
+    document.getElementById('p1').classList.add('active');
   }else{
     errorMsg.innerText="Uhm baby… that’s not our secret 🥺";
   }
