@@ -6,10 +6,8 @@
 <meta name="color-scheme" content="dark">
 <title>To My 🩷 Mufaro</title>
 
-<!-- Google Fonts: Manrope -->
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-<!-- Open Graph for link preview -->
 <meta property="og:title" content="To My 🩷 Mufaro">
 <meta property="og:description" content="A private love story just for you">
 <meta property="og:image" content="mufaro6.jpg">
@@ -36,10 +34,8 @@ body {
 }
 
 body.blur { filter: blur(6px); }
-body.zoom { animation: none !important; }
-@keyframes slowZoom {}
 
-/* ================= LOCK SCREEN ================= */
+@keyframes slowZoom {}
 
 #lockScreen {
   position: fixed;
@@ -75,16 +71,8 @@ body.zoom { animation: none !important; }
   width: 100%;
 }
 
-.lockBox h1 { 
-  font-size: 1.65em; 
-  margin: 0; 
-  font-weight: 600; 
-}
-.lockBox p { 
-  margin: 4px 0 10px; 
-  font-size: 1.02em;
-  line-height: 1.4;
-}
+.lockBox h1 { font-size: 1.65em; margin: 0; font-weight: 600; }
+.lockBox p { margin: 4px 0 10px; font-size: 1.02em; line-height: 1.4; }
 .lockBox input {
   width: 100%;
   padding: 14px 18px;
@@ -106,13 +94,8 @@ body.zoom { animation: none !important; }
   border: none;
   cursor: pointer;
 }
-#errorMsg { 
-  color: #ffb6c1; 
-  margin-top: 8px; 
-  font-size: 0.95em; 
-}
+#errorMsg { color: #ffb6c1; margin-top: 8px; font-size: 0.95em; }
 
-/* FLOATING HEARTS */
 #hearts { position: absolute; inset: 0; pointer-events: none; z-index: 1; }
 .heart {
   position: absolute;
@@ -125,7 +108,6 @@ body.zoom { animation: none !important; }
   to { transform: translateY(-120px) rotate(720deg); }
 }
 
-/* CONTAINER */
 .container {
   position: relative;
   z-index: 10;
@@ -136,7 +118,6 @@ body.zoom { animation: none !important; }
   padding: 20px;
 }
 
-/* PAGES */
 .page {
   display: none;
   max-width: 90%;
@@ -155,7 +136,6 @@ body.zoom { animation: none !important; }
   opacity: 1;
 }
 
-/* HEADERS */
 h1 {
   font-size: 1.9em;
   margin: 0.4em 0;
@@ -178,7 +158,6 @@ h2 {
   font-weight: 400;
 }
 
-/* BUTTONS */
 button {
   margin: 20px 12px;
   padding: 12px 35px;
@@ -191,10 +170,15 @@ button {
 #yesBtn { background: #32cd32; color: white; }
 #noBtn { background: #ff4500; color: white; }
 
-/* STORY */
-.story { display: flex; justify-content: center; margin: 20px 0; }
+.story { 
+  display: flex; 
+  justify-content: center; 
+  margin: 20px 0; 
+  width: 100%;
+}
 .story-slide {
   max-width: 85%;
+  min-height: 160px;
   background: rgba(0,0,0,0);
   border-radius: 20px;
   padding: 25px;
@@ -202,10 +186,22 @@ button {
   font-weight: 400;
   box-shadow: 0 4px 15px rgba(0,150,255,0.3);
   transition: opacity 0.8s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
-#storyContinue { display: none; }
+#storyContinue { 
+  display: none;
+  margin: 60px auto 20px;
+  padding: 16px 60px;
+  font-size: 1.25em;
+  min-width: 240px;
+  background: #ff69b4;
+  color: white;
+  box-shadow: 0 6px 25px rgba(255, 105, 180, 0.5);
+}
 
-/* CONFETTI */
 #confetti-canvas {
   position: fixed;
   inset: 0;
@@ -213,7 +209,6 @@ button {
   z-index: 50;
 }
 
-/* SCREENSHOT REMINDER */
 #screenshotReminder {
   font-size: 0.95em;
   color: #ffb6c1;
@@ -225,7 +220,6 @@ button {
 
 <body>
 
-<!-- LOCK SCREEN -->
 <div id="lockScreen">
   <div class="lockBox">
     <div class="lock-content">
@@ -238,7 +232,6 @@ button {
   </div>
 </div>
 
-<!-- BACKGROUND MUSIC -->
 <audio id="bgMusic" loop>
   <source src="lovestory.mp3" type="audio/mpeg">
 </audio>
@@ -248,7 +241,6 @@ button {
 
 <div class="container">
 
-<!-- PAGE 1 -->
 <div class="page active" id="p1">
   <h1>Hey Mufaro my cutie penguin🐧💕</h1>
   <div class="content">
@@ -258,7 +250,6 @@ button {
   <button onclick="showPage(2)">Continue →</button>
 </div>
 
-<!-- PAGE 2 -->
 <div class="page" id="p2">
   <h2>That smile of yours...</h2>
   <div class="content">
@@ -269,7 +260,6 @@ button {
   <button onclick="showPage(3)">Next 🥹</button>
 </div>
 
-<!-- PAGE 3 -->
 <div class="page" id="p3">
   <h2>Y'a my safe place</h2>
   <div class="content">
@@ -281,7 +271,6 @@ button {
   <button onclick="showPage(4)">One More... 🫂</button>
 </div>
 
-<!-- PAGE 4 -->
 <div class="page" id="p4">
   <div class="content">
     Our love, your cute focused face, your sexy body🥹...<br><br>
@@ -296,7 +285,6 @@ button {
   <button onclick="showPage('pStory')">Ready for something special? 💌</button>
 </div>
 
-<!-- STORY PAGE -->
 <div class="page" id="pStory">
   <h2>Let's warm up a bit first..🥲🩷</h2>
   <div class="story">
@@ -305,7 +293,6 @@ button {
   <button id="storyContinue" onclick="showPage(5)">Ready now? Click with love🥺</button>
 </div>
 
-<!-- VALENTINE -->
 <div class="page" id="p5">
   <h1>So...</h1>
   <h2>Mufaro, my sweetest, prettiest girl, will you be my Valentine🌹, my Forever Partner even in crime?🥹♥️</h2>
@@ -313,7 +300,6 @@ button {
   <button id="noBtn" onclick="sayNo()">No 😏</button>
 </div>
 
-<!-- FINAL CELEBRATION -->
 <div class="page" id="p6">
   <h1>YAYYYYY SHE SAID YES, BABY!!! 🥹🩷🥳</h1>
   <div class="content">
@@ -324,7 +310,6 @@ button {
   <div id="screenshotReminder">💡 Don’t forget to screenshot this and send it to me!♥️</div>
 </div>
 
-<!-- EXTRA PHOTO PAGE -->
 <div class="page" id="p7">
   <h1>Just imagine… 😍</h1>
   <div class="content">
@@ -336,10 +321,9 @@ button {
 </div>
 
 <script>
-// ===== PHOTOS ARRAY =====
 const allPhotos=[
-'mufaro1.jpg','mufaro2.jpg','mufaro3.jpg','mufaro4.jpg','mufaro5.jpg',
-'mufaro6.jpg','mufaro7.jpg','mufaro8.jpg','mufaro9.jpg','mufaro10.jpg'
+  'mufaro1.jpg','mufaro2.jpg','mufaro3.jpg','mufaro4.jpg','mufaro5.jpg',
+  'mufaro6.jpg','mufaro7.jpg','mufaro8.jpg','mufaro9.jpg','mufaro10.jpg'
 ];
 
 let bg=0;
@@ -349,7 +333,6 @@ function setBg(){
 setBg();
 setInterval(()=>{ bg=(bg+1)%allPhotos.length; setBg(); },2000);
 
-// HEARTS
 setInterval(()=>{
   const h=document.createElement('div');
   h.className='heart';
@@ -360,7 +343,6 @@ setInterval(()=>{
   setTimeout(()=>h.remove(),15000);
 },400);
 
-// PAGE SWITCH
 function showPage(n){
   document.body.classList.add('blur');
   setTimeout(()=>{
@@ -372,7 +354,6 @@ function showPage(n){
   },400);
 }
 
-// STORY
 const storyQuotes=[
   '"beautiful♥️" looks familiar? yeah that\'s how it all started🥹',
   'I love how we relate on same things and we\'re always twinnin🥺🩷',
@@ -380,26 +361,46 @@ const storyQuotes=[
   'Looking back at how we started, I\'m so lucky ya mine🥹',
   'Your voice when you talk and sing for me, it turns me ON😩',
   'Endless calls and long chats became our little habit🩷',
-  'And despite being in a long distance relationship, we keep loving each other more every day🩷'
+  'And despite being in a long distance relationship, we keep loving each other more every day🩷',
+  " "   // final empty slide for the button
 ];
-let si=0,st=null;
+
+let si=0, st=null;
+
 function startStory(){
-  storyBox.innerText=storyQuotes[0];
-  storyContinue.style.display='none';
-  si=0; clearInterval(st);
-  st=setInterval(()=>{
+  const storyBox = document.getElementById('storyBox');
+  const storyContinue = document.getElementById('storyContinue');
+  
+  storyBox.innerText = storyQuotes[0];
+  storyContinue.style.display = 'none';
+  
+  si = 0;
+  clearInterval(st);
+  
+  st = setInterval(() => {
     si++;
-    if(si<storyQuotes.length){
-      storyBox.style.opacity=0;
-      setTimeout(()=>{storyBox.style.opacity=1; storyBox.innerText=storyQuotes[si];},400);
-    }else{
+    
+    if (si < storyQuotes.length - 1) {
+      storyBox.style.opacity = 0;
+      setTimeout(() => {
+        storyBox.style.opacity = 1;
+        storyBox.innerText = storyQuotes[si];
+      }, 400);
+    } 
+    else if (si === storyQuotes.length - 1) {
+      storyBox.style.opacity = 0;
+      setTimeout(() => {
+        storyBox.innerText = "";
+        storyBox.style.opacity = 1;
+        storyContinue.style.display = 'inline-block';
+      }, 600);
+    } 
+    else {
       clearInterval(st);
-      storyContinue.style.display='inline-block';
     }
-  },6000);
+  }, 6000);
 }
 
-// VALENTINE
 let noCount=0;
 function sayNo(){
   noCount++;
@@ -414,7 +415,6 @@ function sayYes(){
   setTimeout(()=>showPage(6),1200);
 }
 
-// CONFETTI
 function startConfetti(){
   const c=document.getElementById('confetti-canvas'),ctx=c.getContext('2d');
   c.width=innerWidth; c.height=innerHeight;
@@ -426,17 +426,12 @@ function startConfetti(){
   })();
 }
 
-// LOCK & MUSIC
 function unlock(){
   if(passwordInput.value==="MTWLB77"){
     lockScreen.style.display="none";
-    
     const music = document.getElementById('bgMusic');
     music.volume = 0.5;
-    music.play().catch(e => {
-      console.log("Autoplay blocked - user interaction may be needed", e);
-    });
-    
+    music.play().catch(e => console.log("Autoplay blocked", e));
     document.getElementById('p1').classList.add('active');
   }else{
     errorMsg.innerText="⚠️Uhm baby… that’s not our secret🥺";
