@@ -437,6 +437,31 @@ function unlock(){
     errorMsg.innerText="⚠️Uhm baby… that’s not our secret🥺";
   }
 }
+
+// === Pause/resume music when user leaves/returns to the page ===
+const bgMusic = document.getElementById('bgMusic');
+let wasPlaying = false;
+
+function handleVisibilityChange() {
+  if (document.hidden) {
+    // Page is hidden → pause music
+    if (!bgMusic.paused) {
+      wasPlaying = true;
+      bgMusic.pause();
+    }
+  } else {
+    // Page is visible again → resume if it was playing before
+    if (wasPlaying && bgMusic.readyState >= 2) {
+      bgMusic.play().catch(e => {
+        console.log("Could not resume music:", e);
+      });
+      wasPlaying = false;
+    }
+  }
+}
+
+document.addEventListener("visibilitychange", handleVisibilityChange, false);
+
 </script>
 
 </body>
