@@ -216,27 +216,28 @@ button {
   font-weight: 400;
 }
 
-/* ─── New styles for memory reveal page ─── */
+/* ─── Updated memory reveal styles (smaller) ─── */
 .memory-photo {
-  max-width: 92%;
+  max-width: 78%;
   border-radius: 16px;
   box-shadow: 0 0 24px rgba(255, 105, 180, 0.6);
-  margin: 18px auto;
+  margin: 14px auto;
   display: block;
   opacity: 1;
   transition: opacity 1.2s ease;
 }
 
 .quote-slide {
-  max-width: 90%;
-  font-size: 1.35em;
+  max-width: 82%;
+  font-size: 1.22em;
   font-weight: 500;
-  line-height: 1.45;
+  line-height: 1.42;
   color: #ffb6c1;
   text-shadow: 0 0 10px #ff69b4;
   opacity: 0;
   transition: opacity 1.2s ease;
-  margin: 16px 0;
+  margin: 14px 0;
+  padding: 0 12px;
 }
 
 .quote-slide.visible {
@@ -355,11 +356,10 @@ button {
   <button onclick="showPage(8)">One More 🩷</button>
 </div>
 
-<!-- New memory reveal page -->
 <div class="page" id="p8">
   <h2 style="margin-bottom: 12px;">Wait… hold on 🧐💕</h2>
   
-  <div id="memoryContainer" style="margin: 20px 0; min-height: 420px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+  <div id="memoryContainer" style="margin: 20px 0; min-height: 360px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
     <img id="photo1" class="memory-photo" src="mufaroX.jpg">
     <div id="quote1" class="quote-slide visible">
       "I remember you said you don't look like this in one of your photos?" 🧐
@@ -461,7 +461,6 @@ function startStory(){
   }, 6000);
 }
 
-// ─── New function for the two-step reveal ───
 function startMemoryReveal() {
   const photo1  = document.getElementById('photo1');
   const quote1  = document.getElementById('quote1');
@@ -469,7 +468,6 @@ function startMemoryReveal() {
   const quote2  = document.getElementById('quote2');
   const backBtn = document.getElementById('goBackCelebration');
 
-  // Reset state
   photo1.style.display = 'block';
   photo1.style.opacity = 1;
   quote1.classList.add('visible');
@@ -489,7 +487,6 @@ function startMemoryReveal() {
         photo2.style.opacity = 1;
         quote2.classList.add('visible');
 
-        // Show "Go back" button only after second quote is visible
         setTimeout(() => {
           backBtn.style.display = 'inline-block';
         }, 1600);
@@ -498,7 +495,7 @@ function startMemoryReveal() {
 
     }, 1000);
 
-  }, 5000); // 5 seconds delay before switching
+  }, 7000); // ← 7 seconds now
 }
 
 let noCount=0;
