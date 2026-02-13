@@ -215,6 +215,43 @@ button {
   margin-top: 20px;
   font-weight: 400;
 }
+
+/* ─── New styles for memory reveal page ─── */
+.memory-photo {
+  max-width: 92%;
+  border-radius: 16px;
+  box-shadow: 0 0 24px rgba(255, 105, 180, 0.6);
+  margin: 18px auto;
+  display: block;
+  opacity: 1;
+  transition: opacity 1.2s ease;
+}
+
+.quote-slide {
+  max-width: 90%;
+  font-size: 1.35em;
+  font-weight: 500;
+  line-height: 1.45;
+  color: #ffb6c1;
+  text-shadow: 0 0 10px #ff69b4;
+  opacity: 0;
+  transition: opacity 1.2s ease;
+  margin: 16px 0;
+}
+
+.quote-slide.visible {
+  opacity: 1;
+}
+
+#goBackCelebration {
+  margin-top: 40px;
+  padding: 14px 48px;
+  font-size: 1.25em;
+  background: #ff69b4;
+  color: white;
+  box-shadow: 0 6px 20px rgba(255, 105, 180, 0.5);
+  display: none;
+}
 </style>
 </head>
 
@@ -315,7 +352,28 @@ button {
   <div class="content">
     <img src="togetherPhotoo.png" style="max-width:90%; border-radius:20px; box-shadow:0 0 20px pink;">
   </div>
-  <button onclick="showPage(6)">Go Back 🫂</button>
+  <button onclick="showPage(8)">One More 🩷</button>
+</div>
+
+<!-- New memory reveal page -->
+<div class="page" id="p8">
+  <h2 style="margin-bottom: 12px;">Wait… hold on 🧐💕</h2>
+  
+  <div id="memoryContainer" style="margin: 20px 0; min-height: 420px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+    <img id="photo1" class="memory-photo" src="mufaroX.jpg">
+    <div id="quote1" class="quote-slide visible">
+      "I remember you said you don't look like this in one of your photos?" 🧐
+    </div>
+    
+    <img id="photo2" class="memory-photo" src="mufaroY.jpg" style="display:none; opacity:0;">
+    <div id="quote2" class="quote-slide">
+      then explain... 😂🩷
+    </div>
+  </div>
+
+  <button id="goBackCelebration" onclick="showPage(6)">
+    Go back 🫂💕
+  </button>
 </div>
 
 </div>
@@ -347,10 +405,12 @@ function showPage(n){
   document.body.classList.add('blur');
   setTimeout(()=>{
     document.querySelector('.page.active')?.classList.remove('active');
-    document.getElementById('p'+n)?.classList.add('active') ||
-    document.getElementById(n)?.classList.add('active');
+    const target = document.getElementById('p'+n) || document.getElementById(n);
+    target?.classList.add('active');
     document.body.classList.remove('blur');
+    
     if(n==='pStory') startStory();
+    if(n===8) startMemoryReveal();
   },400);
 }
 
@@ -401,6 +461,46 @@ function startStory(){
   }, 6000);
 }
 
+// ─── New function for the two-step reveal ───
+function startMemoryReveal() {
+  const photo1  = document.getElementById('photo1');
+  const quote1  = document.getElementById('quote1');
+  const photo2  = document.getElementById('photo2');
+  const quote2  = document.getElementById('quote2');
+  const backBtn = document.getElementById('goBackCelebration');
+
+  // Reset state
+  photo1.style.display = 'block';
+  photo1.style.opacity = 1;
+  quote1.classList.add('visible');
+  photo2.style.display = 'none';
+  quote2.classList.remove('visible');
+  backBtn.style.display = 'none';
+
+  setTimeout(() => {
+    quote1.classList.remove('visible');
+    photo1.style.opacity = 0;
+
+    setTimeout(() => {
+      photo1.style.display = 'none';
+      photo2.style.display = 'block';
+
+      setTimeout(() => {
+        photo2.style.opacity = 1;
+        quote2.classList.add('visible');
+
+        // Show "Go back" button only after second quote is visible
+        setTimeout(() => {
+          backBtn.style.display = 'inline-block';
+        }, 1600);
+
+      }, 300);
+
+    }, 1000);
+
+  }, 5000); // 5 seconds delay before switching
+}
+
 let noCount=0;
 function sayNo(){
   noCount++;
@@ -438,19 +538,16 @@ function unlock(){
   }
 }
 
-// === Pause/resume music when user leaves/returns to the page ===
 const bgMusic = document.getElementById('bgMusic');
 let wasPlaying = false;
 
 function handleVisibilityChange() {
   if (document.hidden) {
-    // Page is hidden → pause music
     if (!bgMusic.paused) {
       wasPlaying = true;
       bgMusic.pause();
     }
   } else {
-    // Page is visible again → resume if it was playing before
     if (wasPlaying && bgMusic.readyState >= 2) {
       bgMusic.play().catch(e => {
         console.log("Could not resume music:", e);
