@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="color-scheme" content="dark">
 <title>To My 🩷 Mufaro</title>
 
@@ -27,11 +27,21 @@ body {
   text-align: center;
   overflow: hidden;
   position: relative;
+  background: #000;
+}
+
+.bg-layer {
+  position: fixed;
+  inset: 0;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  transition: background-image 2s ease-in-out;
+  transition: opacity 1.8s ease-in-out;
+  opacity: 0;
+  z-index: -2;
+  pointer-events: none;
 }
+#bg-layer1 { z-index: -1; opacity: 1; }
 
 body.blur { filter: blur(6px); }
 
@@ -216,7 +226,6 @@ button {
   font-weight: 400;
 }
 
-/* ─── Updated memory reveal styles (smaller) ─── */
 .memory-photo {
   max-width: 78%;
   border-radius: 16px;
@@ -258,6 +267,9 @@ button {
 
 <body>
 
+<div id="bg-layer1" class="bg-layer"></div>
+<div id="bg-layer2" class="bg-layer"></div>
+
 <div id="lockScreen">
   <div class="lockBox">
     <div class="lock-content">
@@ -270,7 +282,7 @@ button {
   </div>
 </div>
 
-<audio id="bgMusic" loop>
+<audio id="bgMusic" loop preload="auto">
   <source src="lovestory.mp3" type="audio/mpeg">
 </audio>
 
@@ -362,7 +374,7 @@ button {
   <div id="memoryContainer" style="margin: 20px 0; min-height: 360px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
     <img id="photo1" class="memory-photo" src="mufaroX.jpg">
     <div id="quote1" class="quote-slide visible">
-      "I remember you said you don't look like this in one of your photos?" 🧐
+      I remember you said you don't look like this in one of your photos? 🧐
     </div>
     
     <img id="photo2" class="memory-photo" src="mufaroY.jpg" style="display:none; opacity:0;">
@@ -379,42 +391,67 @@ button {
 </div>
 
 <script>
-const allPhotos=[
+// ─── Preload ALL background images ───
+const allPhotos = [
   'mufaro1.jpg','mufaro2.jpg','mufaro3.jpg','mufaro4.jpg','mufaro5.jpg',
   'mufaro6.jpg','mufaro7.jpg','mufaro8.jpg','mufaro9.jpg','mufaro10.jpg'
 ];
 
-let bg=0;
-function setBg(){
-  document.body.style.backgroundImage=`url('${allPhotos[bg]}')`;
+allPhotos.forEach(src => {
+  const img = new Image();
+  img.src = src;
+});
+
+// ─── Crossfade background ───
+let currentLayer = 1;
+let bgIndex = 0;
+
+function crossfadeBg() {
+  const nextLayerId = currentLayer === 1 ? 'bg-layer2' : 'bg-layer1';
+  const nextLayer = document.getElementById(nextLayerId);
+  
+  nextLayer.style.backgroundImage = `url('${allPhotos[bgIndex]}')`;
+  nextLayer.style.opacity = '1';
+  
+  setTimeout(() => {
+    const prevLayerId = currentLayer === 1 ? 'bg-layer1' : 'bg-layer2';
+    document.getElementById(prevLayerId).style.opacity = '0';
+    currentLayer = currentLayer === 1 ? 2 : 1;
+  }, 1800);
+
+  bgIndex = (bgIndex + 1) % allPhotos.length;
 }
-setBg();
-setInterval(()=>{ bg=(bg+1)%allPhotos.length; setBg(); },2000);
 
-setInterval(()=>{
-  const h=document.createElement('div');
-  h.className='heart';
-  h.innerText='🩷';
-  h.style.left=Math.random()*100+'vw';
-  h.style.animationDuration=(Math.random()*6+8)+'s';
-  hearts.appendChild(h);
-  setTimeout(()=>h.remove(),15000);
-},400);
+crossfadeBg(); // start immediately
+setInterval(crossfadeBg, 9000); // every 9 seconds
 
-function showPage(n){
+// ─── Hearts (less frequent) ───
+setInterval(() => {
+  const h = document.createElement('div');
+  h.className = 'heart';
+  h.innerText = '🩷';
+  h.style.left = Math.random() * 100 + 'vw';
+  h.style.animationDuration = (Math.random() * 6 + 8) + 's';
+  document.getElementById('hearts').appendChild(h);
+  setTimeout(() => h.remove(), 15000);
+}, 800);
+
+// ─── Page navigation ───
+function showPage(n) {
   document.body.classList.add('blur');
-  setTimeout(()=>{
+  setTimeout(() => {
     document.querySelector('.page.active')?.classList.remove('active');
-    const target = document.getElementById('p'+n) || document.getElementById(n);
-    target?.classList.add('active');
+    const target = document.getElementById('p' + n) || document.getElementById(n);
+    if (target) target.classList.add('active');
     document.body.classList.remove('blur');
     
-    if(n==='pStory') startStory();
-    if(n===8) startMemoryReveal();
-  },400);
+    if (n === 'pStory') startStory();
+    if (n === 8) startMemoryReveal();
+  }, 400);
 }
 
-const storyQuotes=[
+// ─── Story sequence ───
+const storyQuotes = [
   '"beautiful♥️" looks familiar? yeah that\'s how it all started🥹',
   'I love how we relate on same things and we\'re always twinnin🥺🩷',
   'I know you said I love you first but i can\'t prove it😭',
@@ -425,9 +462,9 @@ const storyQuotes=[
   " "   // final empty slide for the button
 ];
 
-let si=0, st=null;
+let si = 0, st = null;
 
-function startStory(){
+function startStory() {
   const storyBox = document.getElementById('storyBox');
   const storyContinue = document.getElementById('storyContinue');
   
@@ -439,28 +476,26 @@ function startStory(){
   
   st = setInterval(() => {
     si++;
-    
     if (si < storyQuotes.length - 1) {
       storyBox.style.opacity = 0;
       setTimeout(() => {
         storyBox.style.opacity = 1;
         storyBox.innerText = storyQuotes[si];
       }, 400);
-    } 
-    else if (si === storyQuotes.length - 1) {
+    } else if (si === storyQuotes.length - 1) {
       storyBox.style.opacity = 0;
       setTimeout(() => {
         storyBox.innerText = "";
         storyBox.style.opacity = 1;
         storyContinue.style.display = 'inline-block';
       }, 600);
-    } 
-    else {
+    } else {
       clearInterval(st);
     }
   }, 6000);
 }
 
+// ─── Memory reveal ───
 function startMemoryReveal() {
   const photo1  = document.getElementById('photo1');
   const quote1  = document.getElementById('quote1');
@@ -495,48 +530,75 @@ function startMemoryReveal() {
 
     }, 1000);
 
-  }, 7000); // ← 7 seconds now
+  }, 7000);
 }
 
-let noCount=0;
-function sayNo(){
+// ─── Yes / No logic ───
+let noCount = 0;
+const yesBtn = document.getElementById('yesBtn');
+
+function sayNo() {
   noCount++;
-  yesBtn.style.transform=`scale(${1+noCount*0.25})`;
+  yesBtn.style.transform = `scale(${1 + noCount * 0.25})`;
 }
-function sayYes(){
-  if(navigator.vibrate) navigator.vibrate(200);
+
+const yesSound = new Audio('yesSound.mp3');
+yesSound.volume = 0.7;
+yesSound.preload = "auto";
+
+function sayYes() {
+  if (navigator.vibrate) navigator.vibrate(200);
   startConfetti();
-  const yesAudio=new Audio('yesSound.mp3');
-  yesAudio.volume=0.7;
-  yesAudio.play().catch(()=>{});
-  setTimeout(()=>showPage(6),1200);
+  yesSound.currentTime = 0;
+  yesSound.play().catch(() => {});
+  setTimeout(() => showPage(6), 1200);
 }
 
-function startConfetti(){
-  const c=document.getElementById('confetti-canvas'),ctx=c.getContext('2d');
-  c.width=innerWidth; c.height=innerHeight;
-  const p=[...Array(200)].map(()=>({x:Math.random()*c.width,y:Math.random()*-c.height,s:6,d:4}));
-  (function a(){
-    ctx.clearRect(0,0,c.width,c.height);
-    p.forEach(o=>{o.y+=o.d; ctx.fillStyle='pink'; ctx.fillRect(o.x,o.y,o.s,o.s);});
-    requestAnimationFrame(a);
-  })();
+// ─── Confetti (lighter) ───
+function startConfetti() {
+  const c = document.getElementById('confetti-canvas');
+  const ctx = c.getContext('2d');
+  c.width = innerWidth;
+  c.height = innerHeight;
+  
+  const particles = [...Array(140)].map(() => ({
+    x: Math.random() * c.width,
+    y: Math.random() * -c.height,
+    s: 6,
+    d: 4
+  }));
+
+  function animate() {
+    ctx.clearRect(0, 0, c.width, c.height);
+    particles.forEach(p => {
+      p.y += p.d;
+      ctx.fillStyle = 'pink';
+      ctx.fillRect(p.x, p.y, p.s, p.s);
+    });
+    requestAnimationFrame(animate);
+  }
+  animate();
+
+  // Stop after \~4 seconds
+  setTimeout(() => { particles.length = 0; }, 4000);
 }
 
-function unlock(){
-  if(passwordInput.value==="MTWLB77"){
-    lockScreen.style.display="none";
+// ─── Unlock ───
+function unlock() {
+  if (document.getElementById('passwordInput').value === "MTWLB77") {
+    document.getElementById('lockScreen').style.display = "none";
     const music = document.getElementById('bgMusic');
     music.volume = 0.5;
     music.play().catch(e => console.log("Autoplay blocked", e));
     document.getElementById('p1').classList.add('active');
-  }else{
-    errorMsg.innerText="⚠️Uhm baby… that’s not our secret🥺";
+  } else {
+    document.getElementById('errorMsg').innerText = "⚠️Uhm baby… that’s not our secret🥺";
   }
 }
 
-const bgMusic = document.getElementById('bgMusic');
+// ─── Visibility handling for music ───
 let wasPlaying = false;
+const bgMusic = document.getElementById('bgMusic');
 
 function handleVisibilityChange() {
   if (document.hidden) {
@@ -546,16 +608,13 @@ function handleVisibilityChange() {
     }
   } else {
     if (wasPlaying && bgMusic.readyState >= 2) {
-      bgMusic.play().catch(e => {
-        console.log("Could not resume music:", e);
-      });
+      bgMusic.play().catch(e => console.log("Could not resume:", e));
       wasPlaying = false;
     }
   }
 }
 
 document.addEventListener("visibilitychange", handleVisibilityChange, false);
-
 </script>
 
 </body>
