@@ -176,6 +176,7 @@ button {
   border-radius: 50px;
   cursor: pointer;
   font-weight: 600;
+  transition: all 0.4s ease;
 }
 #yesBtn { background: #32cd32; color: white; }
 #noBtn { background: #ff4500; color: white; }
@@ -283,7 +284,7 @@ button {
 </div>
 
 <audio id="bgMusic" loop preload="auto">
-  <source src="lovestoryy.mp3" type="audio/mpeg">
+  <source src="lovestory.mp3" type="audio/mpeg">
 </audio>
 
 <div id="hearts"></div>
@@ -361,7 +362,7 @@ button {
 </div>
 
 <div class="page" id="p7">
-  <h1>This could be us rn...😔🩷</h1>
+  <h1>Imagine...😔🩷</h1>
   <div class="content">
     <img src="togetherPhotoo.png" style="max-width:90%; border-radius:20px; box-shadow:0 0 20px pink;">
   </div>
@@ -379,7 +380,7 @@ button {
     
     <img id="photo2" class="memory-photo" src="mufaroY.jpg" style="display:none; opacity:0;">
     <div id="quote2" class="quote-slide">
-      then explain... 😂🩷
+      then explain this Miss Brianna.. 😂🩷
     </div>
   </div>
 
@@ -422,10 +423,10 @@ function crossfadeBg() {
   bgIndex = (bgIndex + 1) % allPhotos.length;
 }
 
-crossfadeBg(); // start immediately
-setInterval(crossfadeBg, 9000); // every 9 seconds
+crossfadeBg();
+setInterval(crossfadeBg, 9000);
 
-// ─── Hearts (less frequent) ───
+// ─── Hearts ───
 setInterval(() => {
   const h = document.createElement('div');
   h.className = 'heart';
@@ -455,11 +456,11 @@ const storyQuotes = [
   '"beautiful♥️" looks familiar? yeah that\'s how it all started🥹',
   'I love how we relate on same things and we\'re always twinnin🥺🩷',
   'I know you said I love you first but i can\'t prove it😭',
-  'Looking back at how we started, I\'m so lucky ya mine🥹',
-  'Your voice when you talk and sing for me, it turns me ON😩',
+  'I don\'t believe that you once beat a boy nearly to death😂',
+  'Your voice when you talk or sing for me, it turns me ON😩',
   'Endless calls and long chats became our little habit🩷',
   'And despite being in a long distance relationship, we keep loving each other more every day🩷',
-  " "   // final empty slide for the button
+  " "
 ];
 
 let si = 0, st = null;
@@ -533,13 +534,35 @@ function startMemoryReveal() {
   }, 7000);
 }
 
-// ─── Yes / No logic ───
+// ─── Yes / No logic (UPDATED BEHAVIOR) ───
 let noCount = 0;
 const yesBtn = document.getElementById('yesBtn');
+const noBtn = document.getElementById('noBtn');
+const originalYesText = "Yes! 🩷💍";
+const originalYesStyle = { background: "#32cd32", padding: "12px 35px", fontSize: "1.2em" };
 
 function sayNo() {
   noCount++;
-  yesBtn.style.transform = `scale(${1 + noCount * 0.25})`;
+
+  if (noCount === 1) {
+    // First No → show message, NO GROWING yet
+    yesBtn.innerHTML = "I'm sure you don't want me to send dogs to add one more scars at your butt😂 ..think again😭";
+    yesBtn.style.background = "#ff69b4";
+    yesBtn.style.padding = "14px 40px";
+    yesBtn.style.fontSize = "1.1em";
+    noBtn.innerHTML = "No... still 😭";
+  } 
+  else {
+    // Second No and beyond → NOW grow Yes button
+    const scale = 1 + (noCount - 1) * 0.4;
+    yesBtn.style.transform = `scale(${scale})`;
+
+    // Extra drama after a few more clicks
+    if (noCount >= 4) {
+      yesBtn.style.fontSize = `${1.4 + (noCount-3)*0.25}em`;
+      yesBtn.style.padding = `${18 + (noCount-3)*8}px ${50 + (noCount-3)*15}px`;
+    }
+  }
 }
 
 const yesSound = new Audio('yesSound.mp3');
@@ -547,6 +570,13 @@ yesSound.volume = 0.7;
 yesSound.preload = "auto";
 
 function sayYes() {
+  // Restore normal appearance if she says Yes after teasing
+  yesBtn.innerHTML = originalYesText;
+  yesBtn.style.background = originalYesStyle.background;
+  yesBtn.style.padding = originalYesStyle.padding;
+  yesBtn.style.fontSize = originalYesStyle.fontSize;
+  yesBtn.style.transform = "scale(1)";
+
   if (navigator.vibrate) navigator.vibrate(400);
   startConfetti();
   yesSound.currentTime = 0;
@@ -554,7 +584,7 @@ function sayYes() {
   setTimeout(() => showPage(6), 1200);
 }
 
-// ─── Confetti (lighter) ───
+// ─── Confetti ───
 function startConfetti() {
   const c = document.getElementById('confetti-canvas');
   const ctx = c.getContext('2d');
@@ -575,11 +605,10 @@ function startConfetti() {
       ctx.fillStyle = 'pink';
       ctx.fillRect(p.x, p.y, p.s, p.s);
     });
-    requestAnimationFrame(animate);
+    if (particles.length > 0) requestAnimationFrame(animate);
   }
   animate();
 
-  // Stop after \~4 seconds
   setTimeout(() => { particles.length = 0; }, 4000);
 }
 
