@@ -178,8 +178,8 @@ button {
   font-weight: 600;
   transition: all 0.4s ease;
 }
-#yesBtn { background: #32cd32; color: white; }
-#noBtn { background: #ff4500; color: white; }
+#yesBtn, #yesBtnTease { background: #32cd32; color: white; }
+#noBtn, #noBtnTease { background: #ff4500; color: white; }
 
 .story { 
   display: flex; 
@@ -348,7 +348,17 @@ button {
   <h1>So...</h1>
   <h2>Mufaro, my sweetest, prettiest girl, will you be my Valentine🌹, my Forever Partner even in crime?🥹♥️</h2>
   <button id="yesBtn" onclick="sayYes()">Yes! 🩷💍</button>
-  <button id="noBtn" onclick="sayNo()">No 😏</button>
+  <button id="noBtn" onclick="showPage('pNoTease')">No 😏</button>
+</div>
+
+<div class="page" id="pNoTease">
+  <h1>Wait wait wait... 😭🧐</h1>
+  <div class="content" style="font-size: 1.3em; line-height: 1.55; margin: 25px 0 35px;">
+    I'm sure you don't want me to send dogs to add one more scar at your butt 😂<br><br>
+    Think again baby... 🥺🩷
+  </div>
+  <button id="yesBtnTease" onclick="sayYes()">Okay fine... Yes! 🩷💍</button>
+  <button id="noBtnTease" onclick="sayNoTease()">Still No 😭</button>
 </div>
 
 <div class="page" id="p6">
@@ -456,7 +466,7 @@ const storyQuotes = [
   '"beautiful♥️" looks familiar? yeah that\'s how it all started🥹',
   'I love how we relate on same things and we\'re always twinnin🥺🩷',
   'I know you said I love you first but i can\'t prove it😭',
-  'I don\'t believe that you once beat a boy nearly to death😂',
+  'I still don\'t believe that you once beat a boy nearly to death, crazy stuff😂',
   'Your voice when you talk or sing for me, it turns me ON😩',
   'Endless calls and long chats became our little habit🩷',
   'And despite being in a long distance relationship, we keep loving each other more every day🩷',
@@ -534,34 +544,36 @@ function startMemoryReveal() {
   }, 7000);
 }
 
-// ─── Yes / No logic (UPDATED BEHAVIOR) ───
-let noCount = 0;
-const yesBtn = document.getElementById('yesBtn');
-const noBtn = document.getElementById('noBtn');
-const originalYesText = "Yes! 🩷💍";
-const originalYesStyle = { background: "#32cd32", padding: "12px 35px", fontSize: "1.2em" };
+// ─── Yes / No logic ───
+let teaseCount = 0;
 
-function sayNo() {
-  noCount++;
+function sayNoTease() {
+  teaseCount++;
 
-  if (noCount === 1) {
-    // First No → show message, NO GROWING yet
-    yesBtn.innerHTML = "I'm sure you don't want me to send dogs to add one more scars at your butt😂 ..think again😭";
-    yesBtn.style.background = "#ff69b4";
-    yesBtn.style.padding = "14px 40px";
-    yesBtn.style.fontSize = "1.1em";
-    noBtn.innerHTML = "No... still 😭";
-  } 
-  else {
-    // Second No and beyond → NOW grow Yes button
-    const scale = 1 + (noCount - 1) * 0.4;
-    yesBtn.style.transform = `scale(${scale})`;
+  const yesBtn = document.getElementById('yesBtnTease');
+  const noBtn  = document.getElementById('noBtnTease');
 
-    // Extra drama after a few more clicks
-    if (noCount >= 4) {
-      yesBtn.style.fontSize = `${1.4 + (noCount-3)*0.25}em`;
-      yesBtn.style.padding = `${18 + (noCount-3)*8}px ${50 + (noCount-3)*15}px`;
-    }
+  const scale = 1 + teaseCount * 0.4;
+  yesBtn.style.transform = `scale(${scale})`;
+
+  if (teaseCount >= 2) {
+    yesBtn.style.padding = `${14 + (teaseCount-1)*8}px ${40 + (teaseCount-1)*15}px`;
+    yesBtn.style.fontSize = `${1.25 + (teaseCount-1)*0.25}em`;
+    yesBtn.style.boxShadow = `0 8px 30px rgba(50,205,50,0.7)`;
+  }
+
+  if (teaseCount === 1) {
+    noBtn.innerHTML = "No... you're serious? 😭";
+  } else if (teaseCount === 2) {
+    noBtn.innerHTML = "Okay now you're just playing 😂";
+  } else if (teaseCount >= 3) {
+    noBtn.innerHTML = "Bruh... say yes already 🥺";
+  }
+
+  if (teaseCount >= 5) {
+    yesBtn.innerHTML = "YES NOW OR DOGS INCOMING 🐶💨🩷";
+    yesBtn.style.background = "#ff3366";
+    yesBtn.style.transform = `scale(2.3)`;
   }
 }
 
@@ -570,12 +582,16 @@ yesSound.volume = 0.7;
 yesSound.preload = "auto";
 
 function sayYes() {
-  // Restore normal appearance if she says Yes after teasing
-  yesBtn.innerHTML = originalYesText;
-  yesBtn.style.background = originalYesStyle.background;
-  yesBtn.style.padding = originalYesStyle.padding;
-  yesBtn.style.fontSize = originalYesStyle.fontSize;
-  yesBtn.style.transform = "scale(1)";
+  // Reset tease appearance if coming from second page
+  const yesTease = document.getElementById('yesBtnTease');
+  if (yesTease) {
+    yesTease.style.transform = "scale(1)";
+    yesTease.style.padding = "12px 35px";
+    yesTease.style.fontSize = "1.2em";
+    yesTease.style.boxShadow = "none";
+    yesTease.innerHTML = "Okay fine... Yes! 🩷💍";
+    yesTease.style.background = "#32cd32";
+  }
 
   if (navigator.vibrate) navigator.vibrate(400);
   startConfetti();
