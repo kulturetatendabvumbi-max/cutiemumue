@@ -283,7 +283,7 @@ button {
 </div>
 
 <audio id="bgMusic" loop preload="auto">
-  <source src="lovestory.mp3" type="audio/mpeg">
+  <source src="lovestoryy.mp3" type="audio/mpeg">
 </audio>
 
 <div id="hearts"></div>
@@ -547,7 +547,7 @@ yesSound.volume = 0.7;
 yesSound.preload = "auto";
 
 function sayYes() {
-  if (navigator.vibrate) navigator.vibrate(200);
+  if (navigator.vibrate) navigator.vibrate(400);
   startConfetti();
   yesSound.currentTime = 0;
   yesSound.play().catch(() => {});
